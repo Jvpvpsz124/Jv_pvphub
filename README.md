@@ -1,53 +1,63 @@
-local player = game.Players.LocalPlayer
-local userInputService = game:GetService("UserInputService")
 
--- Criação da interface
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
+```lua
+local function criarCasa(posicao)
+    -- Criar a base da casa
+    local base = Instance.new("Part")
+    base.Size = Vector3.new(10, 1, 10) -- Tamanho da base
+    base.Position = posicao
+    base.Anchored = true
+    base.BrickColor = BrickColor.new("Brown") -- Cor da base
+    base.Parent = workspace
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 1, 0) -- Largura de 200 pixels e altura total da tela
-frame.Position = UDim2.new(0, 0, 0, 0) -- Lado esquerdo da tela
-frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Cor de fundo
-frame.Visible = false -- Inicialmente invisível
-frame.Parent = screenGui
+    -- Criar as paredes
+    local paredeFrente = Instance.new("Part")
+    paredeFrente.Size = Vector3.new(10, 5, 1)
+    paredeFrente.Position = posicao + Vector3.new(0, 2.5, -5)
+    paredeFrente.Anchored = true
+    paredeFrente.BrickColor = BrickColor.new("Dark stone grey")
+    paredeFrente.Parent = workspace
 
-local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(1, 0, 0, 50) -- Texto ocupa toda a largura do frame
-textLabel.Position = UDim2.new(0, 0, 0, 0)
-textLabel.Text = "Opções de Espancar"
-textLabel.TextColor3 = Color3.new(1, 1, 1) -- Cor do texto
-textLabel.BackgroundTransparency = 1 -- Fundo transparente
-textLabel.Parent = frame
+    local paredeTraseira = Instance.new("Part")
+    paredeTraseira.Size = Vector3.new(10, 5, 1)
+    paredeTraseira.Position = posicao + Vector3.new(0, 2.5, 5)
+    paredeTraseira.Anchored = true
+    paredeTraseira.BrickColor = BrickColor.new("Dark stone grey")
+    paredeTraseira.Parent = workspace
 
--- Função para adicionar botões de espancamento
-local function addButton(text, position)
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(1, 0, 0, 50) -- Tamanho do botão
-    button.Position = position
-    button.Text = text
-    button.TextColor3 = Color3.new(1, 1, 1) -- Cor do texto
-    button.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Cor do botão
-    button.Parent = frame
+    local paredeEsquerda = Instance.new("Part")
+    paredeEsquerda.Size = Vector3.new(1, 5, 10)
+    paredeEsquerda.Position = posicao + Vector3.new(-5, 2.5, 0)
+    paredeEsquerda.Anchored = true
+    paredeEsquerda.BrickColor = BrickColor.new("Dark stone grey")
+    paredeEsquerda.Parent = workspace
 
-    button.MouseButton1Click:Connect(function()
-        -- Aqui você pode adicionar a lógica para "espancar" jogadores
-        print(text .. " ativado!")
+    local paredeDireita = Instance.new("Part")
+    paredeDireita.Size = Vector3.new(1, 5, 10)
+    paredeDireita.Position = posicao + Vector3.new(5, 2.5, 0)
+    paredeDireita.Anchored = true
+    paredeDireita.BrickColor = BrickColor.new("Dark stone grey")
+    paredeDireita.Parent = workspace
+
+    -- Criar o telhado
+    local telhado = Instance.new("WedgePart")
+    telhado.Size = Vector3.new(11, 1, 11)
+    telhado.Position = posicao + Vector3.new(0, 6, 0)
+    telhado.Anchored = true
+    telhado.BrickColor = BrickColor.new("Bright red") -- Cor do telhado
+    telhado.Parent = workspace
+end
+
+-- Função para ativar a criação da casa
+local function ativarCriacao()
+    local posicaoCasa = Vector3.new(0, 0, 0) -- Altere para a posição desejada
+    criarCasa(posicaoCasa)
+end
+
+-- Conectar a função ao evento de um jogador entrar no jogo
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        -- Aqui você pode ativar a criação da casa quando o jogador entrar
+        ativarCriacao()
     end)
-end
-
--- Adicionando botões de exemplo
-addButton("Espancar Jogador 1", UDim2.new(0, 0, 0, 50))
-addButton("Espancar Jogador 2", UDim2.new(0, 0, 0, 100))
-
--- Função para alternar a visibilidade da interface
-local function toggleFrame()
-    frame.Visible = not frame.Visible
-end
-
--- Conectar a função ao clique
-userInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessedEvent then
-        toggleFrame()
-    end
 end)
+```
